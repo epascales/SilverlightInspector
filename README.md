@@ -3,6 +3,8 @@
 
 ##Installation
 
+PM> Install-Package Silverlight.Inspector
+
 var shell = Container.Resolve<ShellView>();
 
 Application.Current.RootVisual = shell;
@@ -10,3 +12,5 @@ Application.Current.RootVisual = shell;
 //insert this line after root visual initialization (usually i App.cs file)
 
 SilverlightInspector.Inspector.Run();
+
+
