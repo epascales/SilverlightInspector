@@ -7,6 +7,6 @@ var shell = Container.Resolve<ShellView>();
 
 Application.Current.RootVisual = shell;
 
-//instert this line after root visual initialization (usually i App.cs file)
+//insert this line after root visual initialization (usually i App.cs file)
 
 SilverlightInspector.Inspector.Run();
