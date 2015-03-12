@@ -3,13 +3,15 @@
 
 ##Installation
 
-1.
+1
+
 ```sh
-
 PM> Install-Package Silverlight.Inspector
-
 ```
-2. var shell = Container.Resolve<ShellView>();
+
+2
+
+var shell = Container.Resolve<ShellView>();
 
 Application.Current.RootVisual = shell;
 
