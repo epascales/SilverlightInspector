@@ -25,8 +25,10 @@
 						<RowDefinition/>
 					</Grid.RowDefinitions>
 					<Border BorderBrush="Gray" BorderThickness="0,0,0,1" Margin="3">
-						<StackPanel>
-							<ToggleButton Margin="3" x:Name="buttonSelect" Content="Zaznacz" Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnUnchecked" />
+						<StackPanel HorizontalAlignment="Left">
+							<ToggleButton Margin="3" x:Name="buttonSelect" Content="Zaznacz" Width="25" Height="25" Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnUnchecked" >
+								<Image Source="../Images/search-icon-md.png" />
+							</ToggleButton>
 						</StackPanel>
 					</Border>
 					<Grid Grid.Row="1">

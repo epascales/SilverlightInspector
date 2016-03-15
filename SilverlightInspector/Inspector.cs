@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
+using NoName.Controls;
 using SilverlightInspector.ViewModels;
 using SilverlightInspector.Views;
 
@@ -23,11 +24,9 @@ namespace SilverlightInspector
 
 			if (root == null)
 				throw new InvalidOperationException("RootVisual is not set.");
+
+			var panel = ControlHelper.FindFirstDescendantElementInVisualTree<Panel>(root);
 			
-			var grid = new Grid();
-			grid.Children.Add(root);
-			Application.Current.RootVisual = grid;
-		
 			var popup = new Popup { IsOpen = true };
 			Action updatePopupSize = () =>
 			{
@@ -42,7 +41,7 @@ namespace SilverlightInspector
 
 			var inspectorView = new InspectorView(new InspectorViewModel());
 			popup.Child = inspectorView;
-			grid.Children.Add(popup);
+			panel.Children.Add(popup);
 			popup.SizeChanged += (s, e) =>
 			{
 				inspectorView.Width = popup.ActualWidth;

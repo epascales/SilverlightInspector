@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using SilverlightInspector.Annotations;
 
 namespace SilverlightInspector.ViewModels

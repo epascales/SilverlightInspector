@@ -1,6 +1,10 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{875C3B7B-19D6-44B2-9CB7-C46FA5E9727C}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightInspector.Web", "SilverlightInspector.Web\SilverlightInspector.Web.csproj", "{ECF925F9-EEBB-4482-A2F1-73F77C8FDA23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightInspector", "SilverlightInspector\SilverlightInspector.csproj", "{C8D2979F-0E57-4C40-B552-5419DDCB205B}"
@@ -8,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightInspector.Example", "SilverlightInspector.Example\SilverlightInspector.Example.csproj", "{E0BDECFE-614C-4EB0-B72E-6BC4EBA5D852}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightInspector.Tests", "SilverlightInspector.Tests\SilverlightInspector.Tests.csproj", "{5D3EA924-FC93-48BC-9BA3-7C0B548F7252}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{875C3B7B-19D6-44B2-9CB7-C46FA5E9727C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
