@@ -11,11 +11,7 @@ PM> Install-Package Silverlight.Inspector
 
 2
 
-var shell = Container.Resolve<ShellView>();
-
-Application.Current.RootVisual = shell;
-
-//insert this line after root visual initialization (usually i App.cs file)
+Just add on main page loaded 
 
 SilverlightInspector.Inspector.Run();
 
