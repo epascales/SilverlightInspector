@@ -20,7 +20,7 @@ namespace SilverlightInspector
 
 		private void Initialize()
 		{
-			var root = Application.Current.RootVisual as UserControl;
+			var root = Application.Current.RootVisual as FrameworkElement;
 
 			if (root == null)
 				throw new InvalidOperationException("RootVisual is not set.");
