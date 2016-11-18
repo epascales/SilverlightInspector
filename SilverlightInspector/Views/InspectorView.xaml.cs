@@ -21,6 +21,11 @@ namespace SilverlightInspector.Views
 				{
 					SelectItem(ViewModel.SelectedItem == null ? null : ViewModel.SelectedItem.Content);
 				}
+
+				if (e.PropertyName == "SelectedModelItem")
+				{
+					SelectItem(ViewModel.SelectedModelItem == null ? null : ViewModel.SelectedModelItem.VisualTreeItem.Content);
+				}
 			};
 		}
 

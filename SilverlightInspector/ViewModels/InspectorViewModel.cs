@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using SilverlightInspector.Annotations;
@@ -10,11 +11,32 @@ namespace SilverlightInspector.ViewModels
 		private List<VisualTreeItem> selectedItemPath;
 		private VisualTreeItem selectedItem;
 		private IList<PropertyInfoViewModel> properties;
+		private List<ModelItem> selectedItemModelsPath;
+		private ModelItem selectedModelItem;
 
 		public List<VisualTreeItem> SelectedItemPath
 		{
 			get { return selectedItemPath; }
-			set { selectedItemPath = value; OnPropertyChanged("SelectedItemPath"); }
+			set { selectedItemPath = value; OnPropertyChanged("SelectedItemPath"); OnSelectedItemChanged(value); }
+		}
+
+		private void OnSelectedItemChanged(IEnumerable<VisualTreeItem> items)
+		{
+			SelectedItemModelsPath = items.Reverse()
+				.GroupBy(i => i.Content.DataContext)
+				.Select(gi => new ModelItem { VisualTreeItem = gi.First() })
+				.Reverse().ToList();
+		}
+
+		public List<ModelItem> SelectedItemModelsPath
+		{
+			get { return selectedItemModelsPath; }
+			set
+			{
+				if (Equals(value, selectedItemModelsPath)) return;
+				selectedItemModelsPath = value;
+				OnPropertyChanged("SelectedItemModelsPath");
+			}
 		}
 
 		public VisualTreeItem SelectedItem
@@ -27,6 +49,26 @@ namespace SilverlightInspector.ViewModels
 			}
 		}
 
+		public ModelItem SelectedModelItem
+		{
+			get { return selectedModelItem; }
+			set
+			{
+				selectedModelItem = value; OnPropertyChanged("SelectedModelItem");
+				OnSelectedModelItemChanged(value);
+			}
+		}
+
+		private void OnSelectedModelItemChanged(ModelItem value)
+		{
+			if (value == null)
+			{
+				Properties = null;
+			}
+
+			RetrieveProperties(value.VisualTreeItem.Content.DataContext);
+		}
+
 		private void OnSelectedItemChanged(VisualTreeItem value)
 		{
 			if (value == null)
@@ -35,10 +77,23 @@ namespace SilverlightInspector.ViewModels
 				return;
 			}
 
-			Properties = value.Content.GetType()
+			RetrieveProperties(value.Content);
+		}
+
+		void RetrieveProperties(object obj)
+		{
+
+			if (obj == null || !obj.GetType().IsClass)
+			{
+				Properties = null;
+				return;
+			}
+
+			Properties = obj.GetType()
 					.GetProperties()
+					.Where(p => p.GetIndexParameters().Length == 0)
 					.OrderBy(p => p.Name)
-					.Select(p => new PropertyInfoViewModel { Name = p.Name, Type = p.PropertyType, Value = p.GetValue(value.Content, null) })
+					.Select(p => new PropertyInfoViewModel { Name = p.Name, Type = p.PropertyType, Value = p.GetValue(obj, null) })
 					.ToList();
 		}
 
@@ -55,6 +110,23 @@ namespace SilverlightInspector.ViewModels
 		{
 			var handler = PropertyChanged;
 			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+
+	public class ModelItem
+	{
+		public VisualTreeItem VisualTreeItem { get; set; }
+
+		public override string ToString()
+		{
+			object vm = VisualTreeItem.Content.DataContext;
+
+			if (vm == null)
+			{
+				vm = "<null>";
+			}
+
+			return string.Format("{0} [{1}]", vm, VisualTreeItem);
 		}
 	}
 }

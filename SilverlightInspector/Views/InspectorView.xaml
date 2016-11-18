@@ -10,58 +10,65 @@
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
 
-	<Grid x:Name="LayoutRoot">
-		<Grid x:Name="gridOverlay" Background="Transparent" Visibility="Collapsed" MouseLeftButtonDown="GridOverlay_OnMouseLeftButtonDown" MouseMove="GridOverlay_OnMouseMove"/>
-		<Border BorderThickness="2" BorderBrush="Red" x:Name="borderMarker" Visibility="Collapsed" RenderTransformOrigin="0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-			<Border.RenderTransform>
-				<CompositeTransform x:Name="borderMarkerTransform"/>
-			</Border.RenderTransform>
-		</Border>
-		<controls:ManipulableControl TranslateX="20" TranslateY="400" Height="200" Width="1000" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-			<Border Background="LightGray" Padding="5,0,5,5">
-				<Grid  >
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition/>
-					</Grid.RowDefinitions>
-					<Border BorderBrush="Gray" BorderThickness="0,0,0,1" Margin="3">
-						<StackPanel HorizontalAlignment="Left">
-							<ToggleButton Margin="3" x:Name="buttonSelect" Content="Zaznacz" Width="25" Height="25" Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnUnchecked" >
-								<Image Source="../Images/search-icon-md.png" />
-							</ToggleButton>
-						</StackPanel>
-					</Border>
-					<Grid Grid.Row="1">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition/>
-							<ColumnDefinition/>
-						</Grid.ColumnDefinitions>
-						<ListBox ItemsSource="{Binding SelectedItemPath}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"></ListBox>
-						<sdk:TreeView Grid.Column="1" ItemsSource="{Binding Properties}" >
-							<sdk:TreeView.ItemTemplate>
-								<sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
+  <Grid x:Name="LayoutRoot">
+	<Grid x:Name="gridOverlay" Background="Transparent" Visibility="Collapsed" MouseLeftButtonDown="GridOverlay_OnMouseLeftButtonDown" MouseMove="GridOverlay_OnMouseMove"/>
+	<Border BorderThickness="2" BorderBrush="Red" x:Name="borderMarker" Visibility="Collapsed" RenderTransformOrigin="0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+	  <Border.RenderTransform>
+		<CompositeTransform x:Name="borderMarkerTransform"/>
+	  </Border.RenderTransform>
+	</Border>
+	<controls:ManipulableControl TranslateX="20" TranslateY="400" Height="200" Width="1000" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+	  <Border Background="LightGray" Padding="5,0,5,5">
+		<Grid  >
+		  <Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+		  </Grid.RowDefinitions>
+		  <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Margin="3">
+			<StackPanel HorizontalAlignment="Left">
+			  <ToggleButton Margin="3" x:Name="buttonSelect" Content="Zaznacz" Width="25" Height="25" Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnUnchecked" >
+				<Image Source="../Images/search-icon-md.png" />
+			  </ToggleButton>
+			</StackPanel>
+		  </Border>
+		  <Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+			  <ColumnDefinition/>
+			  <ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<sdk:TabControl>
+			  <sdk:TabItem Header="Views hierarchy">
+				<ListBox ItemsSource="{Binding SelectedItemPath}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"></ListBox>
+			  </sdk:TabItem>
+			  <sdk:TabItem Header="ViewModels hierachy">
+				<ListBox ItemsSource="{Binding SelectedItemModelsPath}" SelectedItem="{Binding SelectedModelItem, Mode=TwoWay}"></ListBox>
+			  </sdk:TabItem>
+			</sdk:TabControl>
+			<sdk:TreeView Grid.Column="1" ItemsSource="{Binding Properties}" >
+			  <sdk:TreeView.ItemTemplate>
+				<sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
 
-									<TextBlock Text="{Binding}">
-										<i:Interaction.Behaviors>
-											<behaviors:BindIsExpandedBehavior />
-										</i:Interaction.Behaviors>
-									</TextBlock>
+				  <TextBlock Text="{Binding}">
+					<i:Interaction.Behaviors>
+					  <behaviors:BindIsExpandedBehavior />
+					</i:Interaction.Behaviors>
+				  </TextBlock>
 
-									<sdk:HierarchicalDataTemplate.ItemTemplate>
-										<sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
-											<TextBlock Text="{Binding}">
-												<i:Interaction.Behaviors>
-													<behaviors:BindIsExpandedBehavior />
-												</i:Interaction.Behaviors>
-											</TextBlock>
-										</sdk:HierarchicalDataTemplate>
-									</sdk:HierarchicalDataTemplate.ItemTemplate>
-								</sdk:HierarchicalDataTemplate>
-							</sdk:TreeView.ItemTemplate>
-						</sdk:TreeView>
-					</Grid>
-				</Grid>
-			</Border>
-		</controls:ManipulableControl>
-	</Grid>
+				  <sdk:HierarchicalDataTemplate.ItemTemplate>
+					<sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
+					  <TextBlock Text="{Binding}">
+						<i:Interaction.Behaviors>
+						  <behaviors:BindIsExpandedBehavior />
+						</i:Interaction.Behaviors>
+					  </TextBlock>
+					</sdk:HierarchicalDataTemplate>
+				  </sdk:HierarchicalDataTemplate.ItemTemplate>
+				</sdk:HierarchicalDataTemplate>
+			  </sdk:TreeView.ItemTemplate>
+			</sdk:TreeView>
+		  </Grid>
+		</Grid>
+	  </Border>
+	</controls:ManipulableControl>
+  </Grid>
 </UserControl>
