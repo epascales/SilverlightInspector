@@ -93,7 +93,19 @@ namespace SilverlightInspector.ViewModels
 					.GetProperties()
 					.Where(p => p.GetIndexParameters().Length == 0)
 					.OrderBy(p => p.Name)
-					.Select(p => new PropertyInfoViewModel { Name = p.Name, Type = p.PropertyType, Value = p.GetValue(obj, null) })
+					.Select(p =>
+					{
+						object val;
+						try
+						{
+							val = p.GetValue(obj, null);
+						}
+						catch (Exception ex)
+						{
+							val = string.Format("<Exception: {0}>", ex.Message);
+						}
+						return new PropertyInfoViewModel { Name = p.Name, Type = p.PropertyType, Value = val };
+					})
 					.ToList();
 		}
 

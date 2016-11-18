@@ -37,7 +37,7 @@ namespace SilverlightInspector.Views
 			borderMarker.Visibility = Visibility.Visible;
 
 			{
-				var openPopups = VisualTreeHelper.GetOpenPopups().Where(p => p.Child != this);
+				var openPopups = VisualTreeHelper.GetOpenPopups().Where(p => p.Child != this && p.Child.Visibility == Visibility.Visible);
 
 
 
@@ -91,7 +91,7 @@ namespace SilverlightInspector.Views
 			else
 			{
 				selectionPath = items;
-				selectedItem = selectionPath.First() as FrameworkElement;
+				selectedItem = selectionPath.FirstOrDefault() as FrameworkElement;
 			}
 
 			ViewModel.SelectedItemPath = selectionPath.OfType<FrameworkElement>().Select(fe => new VisualTreeItem(fe)).ToList();
