@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using Microsoft.Expression.Interactivity.Core;
 using SilverlightInspector.Annotations;
 
 namespace SilverlightInspector.ViewModels
@@ -13,6 +16,22 @@ namespace SilverlightInspector.ViewModels
 		private IList<PropertyInfoViewModel> properties;
 		private List<ModelItem> selectedItemModelsPath;
 		private ModelItem selectedModelItem;
+		private int? hashCode;
+
+		public InspectorViewModel()
+		{
+			RefreshCommand = new ActionCommand(() =>
+			{
+				if (SelectedItem == null)
+					return;
+
+				RetrieveProperties(SelectedObject);
+			});
+			ShowViewHierarchyCommand = new ActionCommand(() =>
+			{
+				ShowViewHierarchy(selectedVisualTreeItem);
+			});
+		}
 
 		public List<VisualTreeItem> SelectedItemPath
 		{
@@ -63,14 +82,31 @@ namespace SilverlightInspector.ViewModels
 		{
 			if (value == null)
 			{
+				selectedVisualTreeItem = null;
 				Properties = null;
 			}
+			selectedVisualTreeItem = value.VisualTreeItem;
 
 			RetrieveProperties(value.VisualTreeItem.Content.DataContext);
 		}
 
+		private void ShowViewHierarchy(VisualTreeItem visualTreeItem)
+		{
+			if (visualTreeItem == null || visualTreeItem.Content == null)
+				return;
+
+			var parentsHierarchy = ControlHelper.GetParentsHierarchy(visualTreeItem.Content);
+			var path = new List<FrameworkElement>() { visualTreeItem.Content };
+			path.AddRange(parentsHierarchy.OfType<FrameworkElement>().ToList());
+			SelectedItemPath = path.Select(i => new VisualTreeItem(i)).ToList();
+			SelectedItem = visualTreeItem;
+		}
+
+		private VisualTreeItem selectedVisualTreeItem;
+
 		private void OnSelectedItemChanged(VisualTreeItem value)
 		{
+			selectedVisualTreeItem = value;
 			if (value == null)
 			{
 				Properties = null;
@@ -80,15 +116,30 @@ namespace SilverlightInspector.ViewModels
 			RetrieveProperties(value.Content);
 		}
 
+		public int? HashCode
+		{
+			get { return hashCode; }
+			set
+			{
+				if (value == hashCode) return;
+				hashCode = value;
+				OnPropertyChanged("HashCode");
+			}
+		}
+
+		public object SelectedObject { get; set; }
+
 		void RetrieveProperties(object obj)
 		{
-
+			SelectedObject = obj;
 			if (obj == null || !obj.GetType().IsClass)
 			{
 				Properties = null;
+				HashCode = null;
 				return;
 			}
 
+			HashCode = obj.GetHashCode();
 			Properties = obj.GetType()
 					.GetProperties()
 					.Where(p => p.GetIndexParameters().Length == 0)
@@ -108,6 +159,9 @@ namespace SilverlightInspector.ViewModels
 					})
 					.ToList();
 		}
+
+		public ICommand RefreshCommand { get; private set; }
+		public ICommand ShowViewHierarchyCommand { get; private set; }
 
 		public IList<PropertyInfoViewModel> Properties
 		{

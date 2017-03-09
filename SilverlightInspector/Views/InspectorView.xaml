@@ -7,8 +7,16 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:behaviors="clr-namespace:SilverlightInspector.Behaviors"
     xmlns:controls="clr-namespace:NoName.Controls;assembly=NoName.Controls"
+    xmlns:extensions="clr-namespace:SilverlightInspector.Extensions"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
+  <UserControl.Resources>
+	<ResourceDictionary>
+	  <ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="Styles.xaml"/>
+	  </ResourceDictionary.MergedDictionaries>
+	</ResourceDictionary>
+  </UserControl.Resources>
 
   <Grid x:Name="LayoutRoot">
 	<Grid x:Name="gridOverlay" Background="Transparent" Visibility="Collapsed" MouseLeftButtonDown="GridOverlay_OnMouseLeftButtonDown" MouseMove="GridOverlay_OnMouseMove"/>
@@ -38,34 +46,79 @@
 			</Grid.ColumnDefinitions>
 			<sdk:TabControl>
 			  <sdk:TabItem Header="Views hierarchy">
-				<ListBox ItemsSource="{Binding SelectedItemPath}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"></ListBox>
-			  </sdk:TabItem>
-			  <sdk:TabItem Header="ViewModels hierachy">
-				<ListBox ItemsSource="{Binding SelectedItemModelsPath}" SelectedItem="{Binding SelectedModelItem, Mode=TwoWay}"></ListBox>
-			  </sdk:TabItem>
-			</sdk:TabControl>
-			<sdk:TreeView Grid.Column="1" ItemsSource="{Binding Properties}" >
-			  <sdk:TreeView.ItemTemplate>
-				<sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
+				<sdk:TreeView ItemsSource="{Binding SelectedItemPath}"  BorderThickness="0">
+				  <i:Interaction.Behaviors>
+					<extensions:SelectedItemTreeViewBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+				  </i:Interaction.Behaviors>
+				  <sdk:TreeView.ItemTemplate>
+					<sdk:HierarchicalDataTemplate ItemsSource="{Binding Children}">
 
-				  <TextBlock Text="{Binding}">
-					<i:Interaction.Behaviors>
-					  <behaviors:BindIsExpandedBehavior />
-					</i:Interaction.Behaviors>
-				  </TextBlock>
-
-				  <sdk:HierarchicalDataTemplate.ItemTemplate>
-					<sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
 					  <TextBlock Text="{Binding}">
 						<i:Interaction.Behaviors>
-						  <behaviors:BindIsExpandedBehavior />
+						  <behaviors:BindIsSelectedBehavior />
 						</i:Interaction.Behaviors>
-					  </TextBlock>
+						</TextBlock>
+
+					  <sdk:HierarchicalDataTemplate.ItemTemplate>
+						<sdk:HierarchicalDataTemplate ItemsSource="{Binding Children}">
+						  <TextBlock Text="{Binding}">
+							<i:Interaction.Behaviors>
+							  <behaviors:BindIsSelectedBehavior />
+							</i:Interaction.Behaviors>
+						  </TextBlock>
+						</sdk:HierarchicalDataTemplate>
+					  </sdk:HierarchicalDataTemplate.ItemTemplate>
 					</sdk:HierarchicalDataTemplate>
-				  </sdk:HierarchicalDataTemplate.ItemTemplate>
-				</sdk:HierarchicalDataTemplate>
-			  </sdk:TreeView.ItemTemplate>
-			</sdk:TreeView>
+				  </sdk:TreeView.ItemTemplate>
+				</sdk:TreeView>
+			  </sdk:TabItem>
+			  <sdk:TabItem Header="ViewModels hierachy">
+				<ListBox ItemsSource="{Binding SelectedItemModelsPath}" BorderThickness="0" SelectedItem="{Binding SelectedModelItem, Mode=TwoWay}"></ListBox>
+			  </sdk:TabItem>
+			</sdk:TabControl>
+			<Grid Grid.Column="1">
+			  <Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+			  </Grid.RowDefinitions>
+			  <Grid>
+				<Grid.ColumnDefinitions>
+				  <ColumnDefinition Width="Auto"/>
+				  <ColumnDefinition />
+				  <ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<TextBlock Margin="3" VerticalAlignment="Center">
+				  <Run Text="HashCode:"/>
+				  <Run Text="{Binding HashCode}"/>
+				</TextBlock>
+				<StackPanel Grid.Column="2" Orientation="Horizontal">
+				  <HyperlinkButton Content="Show view hierarchy" Command="{Binding ShowViewHierarchyCommand}"/>
+				  <HyperlinkButton Content="Refresh" Command="{Binding RefreshCommand}"/>
+				</StackPanel>
+			  </Grid>
+			  <sdk:TreeView Grid.Row="1"  ItemsSource="{Binding Properties}" BorderThickness="0" >
+				<sdk:TreeView.ItemTemplate>
+				  <sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
+
+					<TextBlock Text="{Binding}">
+					  <i:Interaction.Behaviors>
+						<behaviors:BindIsExpandedBehavior />
+					  </i:Interaction.Behaviors>
+					</TextBlock>
+
+					<sdk:HierarchicalDataTemplate.ItemTemplate>
+					  <sdk:HierarchicalDataTemplate ItemsSource="{Binding Properties}">
+						<TextBlock Text="{Binding}">
+						  <i:Interaction.Behaviors>
+							<behaviors:BindIsExpandedBehavior />
+						  </i:Interaction.Behaviors>
+						</TextBlock>
+					  </sdk:HierarchicalDataTemplate>
+					</sdk:HierarchicalDataTemplate.ItemTemplate>
+				  </sdk:HierarchicalDataTemplate>
+				</sdk:TreeView.ItemTemplate>
+			  </sdk:TreeView>
+			</Grid>
 		  </Grid>
 		</Grid>
 	  </Border>

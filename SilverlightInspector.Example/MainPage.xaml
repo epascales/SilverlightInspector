@@ -6,10 +6,11 @@
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
 
-	<Grid x:Name="LayoutRoot" Background="White">
-		<StackPanel>
-			<Button Content="Open window" Click="ButtonBase_OnClick"></Button>
-			<Button Content="Open window" Click="ButtonBase_OnClick"></Button>
-		</StackPanel>
-	</Grid>
+  <Grid x:Name="LayoutRoot" Background="White">
+	<StackPanel>
+	  <Button Content="Open window" Click="ButtonBase_OnClick"></Button>
+	  <Button Content="Open window" Click="ButtonBase_OnClick"></Button>
+	  <TextBox Text="Test"></TextBox>
+	</StackPanel>
+  </Grid>
 </UserControl>

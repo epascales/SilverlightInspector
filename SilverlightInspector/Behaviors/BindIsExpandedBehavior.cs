@@ -23,4 +23,22 @@ namespace SilverlightInspector.Behaviors
 			return parent is T || parent == null ? parent as T : GetParent<T>(parent);
 		}
 	}
+
+	public class BindIsSelectedBehavior : Behavior<FrameworkElement>
+	{
+		protected override void OnAttached()
+		{
+			AssociatedObject.Loaded += (s, e) =>
+			{
+				var treeViewItem = GetParent<TreeViewItem>(AssociatedObject);
+				treeViewItem.SetBinding(TreeViewItem.IsSelectedProperty, new Binding("IsSelected") { Mode = BindingMode.TwoWay });
+			};
+		}
+
+		public static T GetParent<T>(DependencyObject control) where T : DependencyObject
+		{
+			var parent = VisualTreeHelper.GetParent(control);
+			return parent is T || parent == null ? parent as T : GetParent<T>(parent);
+		}
+	}
 }

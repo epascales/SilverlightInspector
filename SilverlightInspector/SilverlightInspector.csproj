@@ -83,6 +83,7 @@
     <Compile Include="Behaviors\BindIsExpandedBehavior.cs" />
     <Compile Include="ControlHelper.cs" />
     <Compile Include="Converters\ObjectPresenterConverter.cs" />
+    <Compile Include="Extensions\SelectedItemTreeViewBehavior.cs" />
     <Compile Include="Inspector.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\InspectorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

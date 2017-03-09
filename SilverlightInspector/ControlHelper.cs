@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace SilverlightInspector
@@ -45,6 +46,25 @@ namespace SilverlightInspector
 			}
 
 			return null;
+		}
+
+		public static IList<DependencyObject> GetParentsHierarchy(DependencyObject dependencyObject)
+		{
+			var result = new List<DependencyObject>();
+			DependencyObject currentObj = dependencyObject;
+			DependencyObject parent;
+			while ((parent = GetParent(currentObj)) != null)
+			{
+				result.Add(parent);
+				currentObj = parent;
+			}
+
+			return result;
+		}
+
+		public static DependencyObject GetParent(DependencyObject dependencyObject)
+		{
+			return VisualTreeHelper.GetParent(dependencyObject);
 		}
 	}
 }
